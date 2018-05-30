@@ -1,0 +1,54 @@
+#include <NewPing.h>
+
+#define TRIGGER_PIN  7  
+#define ECHO_PIN     6  
+#define MAX_DISTANCE 500
+#define mi 13
+#define mg 12
+#define mi1 10
+#define mg1 11
+#define mh 9
+#define mh1 5
+
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+void setup() {
+  Serial.begin(115200); 
+  pinMode(mi, OUTPUT);
+  pinMode(mg, OUTPUT);
+  pinMode(mi1, OUTPUT);
+  pinMode(mg1, OUTPUT);
+  pinMode(mh, OUTPUT);
+  pinMode(mh1, OUTPUT);
+}
+
+void loop() {
+    delay(30);                     
+  Serial.print("Ping: ");
+  Serial.print(sonar.ping_cm()); 
+  Serial.println("cm");
+  if (sonar.ping_cm() < 10){
+  analogWrite(mh, 0);
+  digitalWrite(mi, HIGH);
+  digitalWrite(mg, LOW);
+  analogWrite(mh1, 0);
+  digitalWrite(mi1, HIGH);
+  digitalWrite(mg1, LOW);
+  }
+  else if(9 < sonar.ping_cm() < 20){
+  analogWrite(mh, 100);
+  digitalWrite(mi, HIGH);
+  digitalWrite(mg, LOW);
+  analogWrite(mh1, 100);
+  digitalWrite(mi1, HIGH);
+  digitalWrite(mg1, LOW); 
+  }
+
+    else if(sonar.ping_cm() > 19){
+  analogWrite(mh, 200);
+  analogWrite(mh1, 200);
+  digitalWrite(mi, HIGH);
+  digitalWrite(mg, LOW);
+  digitalWrite(mi1, HIGH);
+  digitalWrite(mg1, LOW); 
+  }
+}
